@@ -56,10 +56,14 @@ int main() {
     cout << "la suma Anything de a+b+c es igual a " << sumAnything(a4,b4,c4) << endl;
 */
 
-    List<string> list;
-    list.add("A");
-    list.add("B");
-    list.print();
+    List< vector<int> > list;
+
+    vector<int> list1 = {1,2,3,4,5};
+    vector<int> list2 = {6,7,8,9,10};
+
+    list.add(list1);
+    list.add(list2);
+    list.printVector();
 
   return 0;
 }

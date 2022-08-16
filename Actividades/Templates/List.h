@@ -12,6 +12,7 @@ class List {
     List(vector<T> list);
     void add(T a);
     void print();
+    void printVector();
 };
 
 // Contructor por default
@@ -45,6 +46,16 @@ template <class T>
 void List<T>::print(){
     for (auto el : list){
         cout << el << endl;
+    }
+}
+
+template <class T>
+void List<T>::printVector(){
+    for (auto el : list){
+        for (auto l : el){
+            cout << l << endl;
+        }
+    cout << endl;
     }
 }
 
