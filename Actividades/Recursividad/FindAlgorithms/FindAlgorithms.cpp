@@ -13,7 +13,7 @@ bool sequentialSearch(vector<int> list, int n){
 }
 
 template <class T>
-bool binarySearch(vector<T>, T value){
+bool binarySearch(vector<T> list, T value){
     //definir limite ing
     //definir limite suo
     //Iterar en la lista mientras limInf<=limSup
@@ -29,8 +29,23 @@ bool binarySearch(vector<T>, T value){
     //cuando me salgo del ciclo
     //regreso false
 
-
-                
+    int max = 0;
+    int min = list.size() - 1;
+    int mid = 0;
+    while(min<=max){
+        mid = (max+min)/2;
+        if(list[mid]==value){
+            //valor en index value
+            return true;
+        }
+        if(list[medio]>value){
+            max = mid - 1;
+        } else if (list[medio]<value){
+            min = mid + 1;
+        }
+    }
+    //no existe
+    return false;
 }
 
 int main()
