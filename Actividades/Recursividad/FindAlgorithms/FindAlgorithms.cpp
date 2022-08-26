@@ -1,7 +1,31 @@
 #include <iostream>
 #include <vector>
 
+#include <ctime>
+#include <stdio.h>
+#include <sys/time.h>
+
 using namespace std;
+
+// Obtiene el tiempo inicial para calcular el tiempo transcurrido por un algoritmo
+void startTime(struct timeval &begin)
+{
+  // start time
+  gettimeofday(&begin, 0);
+}
+
+// Imprime el tiempo transcurrido desde el valor de start hasta el momento que se ejecuta la función
+void getTime(struct timeval begin, struct timeval end)
+{
+  long seconds, microseconds;
+  double elapsed;
+  // end time
+  gettimeofday(&end, 0);
+  seconds = end.tv_sec - begin.tv_sec;
+  microseconds = end.tv_usec - begin.tv_usec;
+  elapsed = seconds + microseconds * 1e-6;
+  printf("Tiempo de ejecución: %.8f seconds.\n", elapsed);
+}
 
 bool sequentialSearch(vector<int> list, int n){
     for(int i = 0; i < list.size(); i++){
@@ -29,18 +53,19 @@ bool binarySearch(vector<T> list, T value){
     //cuando me salgo del ciclo
     //regreso false
 
-    int max = 0;
-    int min = list.size() - 1;
-    int mid = 0;
+    int min = 0;
+    int mid = 1;
+    int max = list.size() - 1;
+
     while(min<=max){
         mid = (max+min)/2;
         if(list[mid]==value){
             //valor en index value
             return true;
         }
-        if(list[medio]>value){
+        if(list[mid]>value){
             max = mid - 1;
-        } else if (list[medio]<value){
+        } else if (list[mid]<value){
             min = mid + 1;
         }
     }
@@ -50,6 +75,10 @@ bool binarySearch(vector<T> list, T value){
 
 int main()
 {
+    // Variables para calcular el tiempo de ejecución
+    struct timeval begin, end;
+
+
     vector<int> list = {5,8,20,4,100,15};
     vector<int> list2 = {5,7,10,20,35,42,63,70,93,100};
     
@@ -65,11 +94,21 @@ int main()
         cin >> userInput;
     }
 
-    if (sequentialSearch(list, userInput)){
-        cout << "Si existe";
+    startTime(begin);
+    if (sequentialSearch(list2, userInput)){
+        cout << "Si existe sequencial" << endl;
     } else {
-        cout << "no existe";
+        cout << "no existe sequencial" << endl;
     }
+    getTime(begin,end);
+
+    startTime(begin);
+    if (binarySearch(list2, userInput)){
+        cout << "Si existe binario" << endl;
+    } else {
+        cout << "no existe binario" << endl;
+    }
+    getTime(begin,end);
 
     return 0;
 }
