@@ -104,7 +104,7 @@ void createListChar(vector<char> &list, int quantity)
 }
 
 template <class T>
-void swapSort(vector<T> &list, int &comparisons, int &swaps){
+void swapSort(vector<T> &list, int &swaps, int &comparisons){
 
   for(int i = 0; i<list.size();i++){
     for(int j = i+1; j-list.size();j++){
@@ -121,9 +121,9 @@ void swapSort(vector<T> &list, int &comparisons, int &swaps){
 }
 
 template <class T>
-void bubbleSort(vector<T> &list, int &comparisons, int &swaps){
+void bubbleSort(vector<T> &list, int &swaps, int &comparisons){
 
-  for(int i = list.size(); i>0;i--){
+  for(int i = list.size()-1; i>0;i--){
     bool swapped = false;
     for(int j = 0; j<i;j++){
       comparisons++;
@@ -137,6 +137,46 @@ void bubbleSort(vector<T> &list, int &comparisons, int &swaps){
     }
     if(!swapped)
       return;
+  }
+
+}
+
+template <class T>
+void selectionSort(vector<T> &list, int &swaps, int &comparisons){
+
+  int min;
+  for(int i = 0; i<list.size()-1;i++){
+
+    int minIndex = i;
+    for(int j = i+1; j<list.size();j++){
+      comparisons++;
+      if (list [j] < list[minIndex]){
+        minIndex = j;
+      }
+    }
+    if (minIndex!=i){
+      swaps++;
+      T temp = list[minIndex];
+      list[minIndex] = list[i];
+      list[i] = temp;
+    }
+  }
+}
+
+template <class T>
+void insertionSort(vector<T> &list, int &swaps, int &comparisons){
+
+  for(int i = 1; i < list.size();i++){
+    T temp = list[i];
+    int j = i-1;
+    comparisons++;
+    while(j>=0 && list[j]>temp){
+      swaps++;
+      comparisons++;
+      list[j+1] = list[j];
+      j--;
+    }
+    list[j+1] = temp;
   }
 
 }
@@ -158,12 +198,14 @@ int main()
   int swaps = 0;
   int comparisons = 0;
 
-  createListInt(list,20);
+  createListInt(list,10);
   vector<int> listDup = list;
   
   printVector(list);
   cout << "\n Swap Sort:" << endl;
-
+  list = listDup;
+  swaps = 0;
+  comparisons = 0;
   startTime(begin);
   swapSort(list, swaps, comparisons);
   getTime(begin,end);
@@ -171,11 +213,34 @@ int main()
   printVector(list);
 
   cout << "\n Bubble Sort:" << endl;
+  list = listDup;
+  swaps = 0;
+  comparisons = 0;
   startTime(begin);
-  swapSort(listDup, swaps, comparisons);
+  bubbleSort(list, swaps, comparisons);
   getTime(begin,end);
   cout << "Comparaciones: " << comparisons << "\tIntercambios: " << swaps << endl;
-  printVector(listDup);
+  printVector(list);
+
+  cout << "\n Selection Sort:" << endl;
+  list = listDup;
+  swaps = 0;
+  comparisons = 0;
+  startTime(begin);
+  selectionSort(list, swaps, comparisons);
+  getTime(begin,end);
+  cout << "Comparaciones: " << comparisons << "\tIntercambios: " << swaps << endl;
+  printVector(list);
+
+  cout << "\n Insetrion Sort:" << endl;
+  list = listDup;
+  swaps = 0;
+  comparisons = 0;
+  startTime(begin);
+  insertionSort(list, swaps, comparisons);
+  getTime(begin,end);
+  cout << "Comparaciones: " << comparisons << "\tIntercambios: " << swaps << endl;
+  printVector(list);
 
   
   return 0;
