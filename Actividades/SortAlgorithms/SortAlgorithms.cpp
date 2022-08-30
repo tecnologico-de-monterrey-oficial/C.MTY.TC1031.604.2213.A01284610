@@ -121,6 +121,27 @@ void swapSort(vector<T> &list, int &comparisons, int &swaps){
 }
 
 template <class T>
+void bubbleSort(vector<T> &list, int &comparisons, int &swaps){
+
+  for(int i = list.size(); i>0;i--){
+    bool swapped = false;
+    for(int j = 0; j<i;j++){
+      comparisons++;
+      if (list [j] > list[j+1]){
+        swaps++;
+        swapped = true;
+        T temp = list[j];
+        list[j] = list[j+1];
+        list[j+1] = temp;
+      }
+    }
+    if(!swapped)
+      return;
+  }
+
+}
+
+template <class T>
 void printVector(vector<T> list){
   for(int i = 0; i<list.size();i++){
       cout << list[i] << " ";
@@ -133,18 +154,29 @@ int main()
   // Variables para calcular el tiempo de ejecución
   struct timeval begin, end;
 
-  vector<char> list;
+  vector<int> list;
   int swaps = 0;
   int comparisons = 0;
 
-  createListChar(list,10);
+  createListInt(list,20);
+  vector<int> listDup = list;
   
   printVector(list);
+  cout << "\n Swap Sort:" << endl;
+
   startTime(begin);
   swapSort(list, swaps, comparisons);
   getTime(begin,end);
   cout << "Comparaciones: " << comparisons << "\tIntercambios: " << swaps << endl;
   printVector(list);
+
+  cout << "\n Bubble Sort:" << endl;
+  startTime(begin);
+  swapSort(listDup, swaps, comparisons);
+  getTime(begin,end);
+  cout << "Comparaciones: " << comparisons << "\tIntercambios: " << swaps << endl;
+  printVector(listDup);
+
   
   return 0;
 }
