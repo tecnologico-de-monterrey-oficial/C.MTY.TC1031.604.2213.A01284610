@@ -182,6 +182,72 @@ void insertionSort(vector<T> &list, int &swaps, int &comparisons){
 }
 
 template <class T>
+void merge(vector<T> &list, int inf, int mid, int sup){
+  vector<T> left;
+  for (int i=inf; i<=mid;i++){
+    left.push_back(list[i]);
+  }
+
+  vector<T> right;
+  for (int i=mid+1; i<=sup;i++){
+    right.push_back(list[i]);
+  }
+
+  //Merge
+  int idxLeft = 0;
+  int idxRight = 0;
+  int idx = inf;
+
+  while(idxLeft < left.size() && idxRight < right.size()){
+    if(left[idxLeft]<right[idxRight]){
+      list[idx] = left[idxLeft];
+      idx++;
+      idxLeft++;
+    } else {
+      list[idx] = right[idxRight];
+      idx++;
+      idxRight++;
+    }
+  }
+
+  while(idxLeft < left.size()){
+      list[idx] = left[idxLeft];
+      idx++;
+      idxLeft++;
+  }
+
+  while(idxRight < right.size()){
+      list[idx] = right[idxRight];
+      idx++;
+      idxRight++;
+  }
+
+
+
+}
+
+template <class T>
+void mergeSort(vector<T> &list, int inf, int sup, int &swaps, int &comparisons){
+  //Si lim inf = sup
+  if (inf = sup){
+    //salir de funcion
+    return;
+  //cuando si pueda separar sublista en 2
+  } else {
+    //calcular mid (inf+sup)/2
+    int mid = (inf+sup)/2;
+    //volver a llamar funcion lado iz (list,inf,mid)
+    mergeSort(list,inf,mid);
+    //volver a llamar funcion lado de (list,mid+1,sup)
+    mergeSort(list,mid+1,sup);
+
+    merge(list, inf, mid, sup)
+  }
+
+  //jutnar sublista iz con derecha organizada
+}
+
+template <class T>
 void printVector(vector<T> list){
   for(int i = 0; i<list.size();i++){
       cout << list[i] << " ";
