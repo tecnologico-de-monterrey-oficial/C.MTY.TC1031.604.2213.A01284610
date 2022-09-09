@@ -45,6 +45,15 @@ bool sequentialSearch(vector<T> list, T value) {
     return false;
 }
 
+template <class T>
+void swap(vector<T> &list, int a, int b) {
+    if (a != b) {
+        T aux = list[a];
+        list[a] = list[b];
+        list[b] = aux;
+    }
+}
+
 // Búsqueda Binaria (O log2(n))
 template <class T>
 bool binarySearch(vector<T> list, T value) {
@@ -227,13 +236,9 @@ void merge(vector<T> &list, int inf, int mid, int sup){
 }
 
 template <class T>
-void mergeSort(vector<T> &list, int inf, int sup, int &swaps, int &comparisons){
+void mergeSort(vector<T> &list, int inf, int sup){
   //Si lim inf = sup
-  if (inf = sup){
-    //salir de funcion
-    return;
-  //cuando si pueda separar sublista en 2
-  } else {
+  if (inf < sup){
     //calcular mid (inf+sup)/2
     int mid = (inf+sup)/2;
     //volver a llamar funcion lado iz (list,inf,mid)
@@ -241,10 +246,118 @@ void mergeSort(vector<T> &list, int inf, int sup, int &swaps, int &comparisons){
     //volver a llamar funcion lado de (list,mid+1,sup)
     mergeSort(list,mid+1,sup);
 
-    merge(list, inf, mid, sup)
+    merge(list, inf, mid, sup);
   }
 
+  return;
   //jutnar sublista iz con derecha organizada
+}
+
+template<class T>
+int getPivot(vector<T> &list, int start, int end) {
+    // Opción 2 (Sin listas temporales)
+    // Identificamos el pivote (El último elemento de la lista)
+    T pivot = list[end];
+    // Creamos un indice auxiliar igual a start -1 (auxIndex)
+    int auxIndex = start - 1;
+    // Recorremos toda la lista desde start hasta end - 1 (index)
+    for (int index=start; index<=end-1; index++) {
+        // Validamos si el valor de la lista en index es menor al pivot
+        if (list[index]<pivot) {
+            // si es menor
+            // incrementamos el valor de auxIndex
+            auxIndex++;
+            // intercambiamos en la lista auxIndex con index
+            swap(list, auxIndex, index);
+        // else
+            // no vamos a hacer nada
+        }
+    }
+    // incrementamos el valor de auxIndex
+    auxIndex++;
+    // intercambiamos auxIndex con el pivot(end)
+    swap(list, auxIndex, end);
+    // regresar el valor de auxIndex
+    return auxIndex;
+}
+
+template<class T>
+int getPivot2(vector<T> &list, int start, int end) {
+    // Opción 1 (Creamos dos listas temporales)
+    // Identificamos el pivote (El último elemento de la lista)
+    T pivot = list[end];
+    // crear lista del lado izquierdo (left)
+    vector<T> left;
+    // crear lista del lado derecho (right)
+    vector<T> right;
+    // iteramos la lista desde start hasta end-1 (index)
+    for (int index=start; index<=end-1; index++) {
+        // Comparamos el valor del el elemento index de la lista (list[index]) con el valor del pivote
+        if (list[index] < pivot) {
+            // Si es menor 
+            // Agregamos el valor del elemento index de la lista a la lista izquierda
+            left.push_back(list[index]);
+        // else
+        } else {
+            // Si mayor o igual
+            // Agregamos el valor del elemento index de la lista a la lista derecha
+            right.push_back(list[index]);
+        }
+    }
+    // definimos un índice de la lista original que va a ser igual a start (index)
+    int index = start;
+    // recorremos toda la lista del lado izquierdo (i)
+    // for (auto el : left) {
+    for (int i=0; i<left.size(); i++) {
+        // Asignamos el elemento de la lista izquierda en la posición i (left[i]) a la posición index de la lista (list[index])
+        // list[index] = el;
+        list[index] = left[i];
+        // incrementamos el valor de índice
+        index++;
+    }
+    // creamos un valor para el índice del pivote que sería igual a index (pivotIndex)
+    int pivotIndex = index;
+    // Asignamos el valor del pivote a list
+    list[pivotIndex] = pivot;
+    // incrementamos el valor del índice
+    index++;
+    // recorremos toda la lista del lado derecho (i)
+    // for (auto el : right) {
+    for (int i=0; i<right.size(); i++) {
+        // Asignamos el elemento de la lista derecha en la posición i (right[i]) a la posición index de la lista (list[index])
+        // list[index] = el;
+        list[index] = right[i];
+        // incrementamos el valor de índice
+        index++;
+    }
+    // regresamos el índice del pivote (indexPivot)
+    return pivotIndex;
+}
+
+template <class T>
+void quickSort(vector<T> &list, int start, int end) {
+    // Condición de control mientras start < end
+    if (start < end) {
+        // Encontrar el pivote y hacer las dos listas
+        int pivot = getPivot(list, start, end);
+        // Ordenamos la lista del lado izquierdo
+        quickSort(list, start, pivot - 1);
+        // Ordenamos la lista del lado derecho
+        quickSort(list, pivot + 1, end);
+    }
+}
+
+template <class T>
+void quickSort2(vector<T> &list, int start, int end) {
+    // Condición de control mientras start < end
+    if (start < end) {
+        // Encontrar el pivote y hacer las dos listas
+        int pivot = getPivot2(list, start, end);
+        // Ordenamos la lista del lado izquierdo
+        quickSort2(list, start, pivot - 1);
+        // Ordenamos la lista del lado derecho
+        quickSort2(list, pivot + 1, end);
+    }
 }
 
 template <class T>
@@ -306,6 +419,13 @@ int main()
   insertionSort(list, swaps, comparisons);
   getTime(begin,end);
   cout << "Comparaciones: " << comparisons << "\tIntercambios: " << swaps << endl;
+  printVector(list);
+
+  cout << "\n Merge Sort:" << endl;
+  list = listDup;
+  startTime(begin);
+  mergeSort(list,0,9);
+  getTime(begin,end);
   printVector(list);
 
   
