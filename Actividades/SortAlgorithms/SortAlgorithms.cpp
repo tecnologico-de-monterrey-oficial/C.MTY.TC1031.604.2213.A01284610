@@ -370,6 +370,8 @@ void printVector(vector<T> list){
 
 int main()
 {
+  srand(time(0));
+
   // Variables para calcular el tiempo de ejecución
   struct timeval begin, end;
 
