@@ -64,6 +64,7 @@
         "__functional_base": "cpp",
         "algorithm": "cpp",
         "functional": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "fstream": "cpp"
     }
 }

@@ -56,17 +56,102 @@ void quickSort(vector<T> &list, int start, int end) {
     }
 }
 
-void printLog(vector<Log> logs){
+template <class T>
+int sequentialDiffSearch(vector<T> list, int index) {
+    int i = index;
+    while (i > 0 && strcmp(list[i-1].ubi.substr(0,3).c_str(), list[i].ubi.substr(0,3).c_str())==0){
+        i--;
+    }
+    return i;
+}
+
+template <class T>
+void sequentialPrintRun(vector<T> list, int index) {
+    int i = index;
+    bool loop = true;
+
+    while (loop){
+        printLog(list,i);
+        if (!(i < list.size()-1) || !(strcmp(list[i].ubi.substr(0,3).c_str(), list[i+1].ubi.substr(0,3).c_str())==0)){
+            loop = false;
+        }
+        i++;
+    }
+    return;
+}
+
+
+template <class T>
+bool binarySearch(vector<T> list, string value) {
+    // Definir el límite inferior
+    int left = 0;
+    // Definir el límite superior
+    int right = list.size() - 1;
+    // Iterar en la lista mientras el límite inferior <= limite superior
+    while (left <= right) {
+        // Calculo la posición del índice de en medio (limite inferior + limite superior) / 2
+        int mid = (left + right) / 2;
+        // Reviso si el valor búscado es igual el elemento de la posición del índice de en medio
+        if (strcmp(list[mid].ubi.substr(0,3).c_str(), value.c_str())==0) {
+
+            //Busqueda secuencial hacia arriba
+            int startIndex = sequentialDiffSearch(list, mid);
+            sequentialPrintRun(list, startIndex);
+            return true;
+
+        } else {
+            // Si no es igual
+            // Reviso si valor buscado es menor al elemento de la posición del índice de en medio
+            if (strcmp(value.c_str(), list[mid].ubi.substr(0,3).c_str())<0) {
+                // Si es menor
+                // actualizo el límite superior con el valor del índice de en medio - 1
+                right = mid -1;
+            } else {
+                // Si es mayor
+                // actualizo el límite inferior con el valor del índice de en medio + 1
+                left = mid + 1;
+            }
+        }
+    }
+    // Cuando me salga del ciclo
+    // Regreso falso
+    return false;
+}
+
+void printAllLogs(vector<Log> logs){
     for (auto log : logs){
         cout << "UBI: " << log.ubi << " datetime: " << log.date << " " << log.time << endl;
     }
 }
 
+void printLog(vector<Log> logs, int i){
+    cout << "UBI: " << logs[i].ubi << " datetime: " << logs[i].date << " " << logs[i].time << endl;
+}
+
 int main(){
     ifstream file;
+    string fileName, searchUbi;
+    bool loop = true;
+    bool loop2 = true;
 
-    file.open("canalsuez.txt");
+    while (loop){
+        cout << "\nIngrese el nombre del archivo con los datos incluyendo la terminación de la extención: " << endl;
+        cin >> fileName;
+        fileName.c_str();
 
+        ifstream fileCheck(fileName);
+
+        if(fileCheck.good()){
+            loop = false;
+        } else {
+            cout << "No se encontró el archivo, ingrese el nombre otra vez." << endl;
+        }
+
+        fileCheck.close();
+    }
+
+    file.open(fileName);
+    
     string date;
     string time;
     string entry;
@@ -80,8 +165,24 @@ int main(){
 
     }
 
+    //sorting de logs
     quickSort(logs, 0, logs.size()-1);
-    printLog(logs);
+
+    while(loop2){
+        cout << "\nIngrese los primeros 3 caracteres del UBI que desea buscar o 'exit' para dejar de buscar: " << endl;
+        cin >> searchUbi;
+
+        if (strcmp(searchUbi.c_str(), "exit")==0){
+            cout << "Muchas Gracias" << endl;
+            return 0;
+            file.close();
+        }
+
+        if (!(binarySearch(logs, searchUbi))){
+        cout << "No se pudo encontrar el UBI" << endl;
+        }
+    }
+
 
     return 0;
 }

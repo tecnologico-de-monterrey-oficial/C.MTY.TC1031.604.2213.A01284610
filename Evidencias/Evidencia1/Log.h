@@ -16,7 +16,9 @@ Log::Log(string date, string time, string entry, string ubi){
     this->time = time;
     this->entry = entry;
     this->ubi = ubi;
-    this->key = ubi + "-" + date + "-" + time;
+
+    string newdate = date.substr(6,4) + date.substr(3,2) + date.substr(0,2);
+    this->key = ubi + "-" + newdate + "-" + time;
     //cambiar año mes dia
 }
 
