@@ -136,8 +136,14 @@ int main(){
 
     while (loop){
         cout << "\nIngrese el nombre del archivo con los datos incluyendo la terminación de la extención: " << endl;
+        cout << "(o 'exit' para salir del programa)" << endl;
         cin >> fileName;
-        fileName.c_str();
+
+        if (strcmp(fileName.c_str(), "exit")==0){
+            cout << "Muchas Gracias" << endl;
+            return 0;
+            file.close();
+        }
 
         ifstream fileCheck(fileName);
 
