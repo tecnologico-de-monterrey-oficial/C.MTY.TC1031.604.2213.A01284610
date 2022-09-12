@@ -92,7 +92,7 @@ bool binarySearch(vector<T> list, string value) {
         // Calculo la posición del índice de en medio (limite inferior + limite superior) / 2
         int mid = (left + right) / 2;
         // Reviso si el valor búscado es igual el elemento de la posición del índice de en medio
-        if (strcmp(list[mid].ubi.substr(0,3).c_str(), value.c_str())==0) {
+        if (list[mid]==value) {
 
             //Busqueda secuencial hacia arriba
             int startIndex = sequentialDiffSearch(list, mid);
@@ -102,7 +102,7 @@ bool binarySearch(vector<T> list, string value) {
         } else {
             // Si no es igual
             // Reviso si valor buscado es menor al elemento de la posición del índice de en medio
-            if (strcmp(value.c_str(), list[mid].ubi.substr(0,3).c_str())<0) {
+            if (list[mid]>value) {
                 // Si es menor
                 // actualizo el límite superior con el valor del índice de en medio - 1
                 right = mid -1;

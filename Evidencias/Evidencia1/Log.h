@@ -9,6 +9,13 @@ struct Log {
 
     Log(string date, string time, string entry, string ubi);
     bool operator<(Log log);
+    bool operator>(Log log);
+    bool operator<(string value);
+    bool operator>(string value);
+    bool operator==(string value);
+
+
+
 };
 
 Log::Log(string date, string time, string entry, string ubi){
@@ -24,4 +31,20 @@ Log::Log(string date, string time, string entry, string ubi){
 
 bool Log::operator<(Log log){
     return this->key < log.key;
+}
+
+bool Log::operator>(Log log){
+    return this->key < log.key;
+}
+
+bool Log::operator<(string value){
+    return strcmp(this->ubi.substr(0,3).c_str(), value.c_str())<0;
+}
+
+bool Log::operator>(string value){
+    return strcmp(this->ubi.substr(0,3).c_str(), value.c_str())>0;
+}
+
+bool Log::operator==(string value){
+    return strcmp(this->ubi.substr(0,3).c_str(), value.c_str())==0;
 }
