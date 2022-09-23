@@ -23,6 +23,18 @@ LinkedList<T>::LinkedList(){
 
 template<class T>
 void LinkedList<T>::append(T data){
+    if(head == nullptr){
+        head = new Node<T>(data);
+        this->size++;
+    } else {
+        Node<T>* temp = head;
+        while(temp->next!=nullptr){
+            temp = temp->next;
+        }
+        temp->next = new Node<T>(data);
+        this->size++;
+    }
+
     //encontrar ultimo
     //agregar nuevo a que apunte a null
     //apuntar el pasado ahora al nuevo
@@ -31,6 +43,15 @@ void LinkedList<T>::append(T data){
 
 template<class T>
 void LinkedList<T>::print(){
-    //desde el head reccorer hasta que no sea null
+    Node<T>* aux = head;
+    int x = 1;
+    while (aux-> next != nullptr)
+    {
+        cout << "dato " x << ": " << aux->data << endl;
+        x++;
+        aux = aux -> next;
+    }
+    
+    cout << "dato " x << ": " << aux->data << endl;
 }
 #endif
