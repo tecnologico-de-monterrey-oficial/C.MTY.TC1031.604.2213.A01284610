@@ -29,8 +29,5 @@ int main()
     cout << list[4] << endl;
 
 
-
-
-
     return 0;
 }
