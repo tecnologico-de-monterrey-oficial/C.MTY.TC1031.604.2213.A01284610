@@ -18,7 +18,7 @@ public:
     T operator[](int index); //done
     void insert(int index, T data); //done
     void deleteAt(int index); //done
-    void deleteData (T data);
+    void deleteData (T data); //done
     void print(); //done
     bool isEmpty(); //done
 };
