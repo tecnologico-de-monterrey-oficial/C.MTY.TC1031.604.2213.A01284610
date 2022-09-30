@@ -27,7 +27,11 @@ int main()
     cout << "ok" << endl;
     cout << list[0] << endl;
     cout << list[4] << endl;
-
+    cout << "ok" << endl;
+    list.print();
+    cout << "ok" << endl;
+    list.deleteData("Y");
+    list.print();
 
     return 0;
 }

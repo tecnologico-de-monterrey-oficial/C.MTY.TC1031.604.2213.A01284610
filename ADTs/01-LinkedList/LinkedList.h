@@ -139,23 +139,83 @@ void LinkedList<T>::insert(int index, T data) {
 }
 
 template<class T>
-void LinkedList<T>::deleteAt(int index) {
-    if (index >= 0 && index < size) {
-        Node<T>* aux = head;
-        int auxIndex = 0;
-        while (auxIndex < index) {
-            auxIndex++;
-            aux = aux->next;
-        }
-        size--;
+void LinkedList<T>::deleteData(T data) {
+    if(head == nullptr){
+        return;
     } else {
-        throw out_of_range("El índice es inválido");
+        Node<T>* temp = head;
+        Node<T>* prevAux = head;
+        int index = 0;
+        if (temp->data == data){
+            head = head->next;
+            delete temp;
+            return;
+        }
+        while(temp->next!=nullptr){
+            if (temp->data == data){
+                // Ya encontramos el valor que queremos borrar
+                // Apuntamos el next de prevAux a el next de Aux
+                prevAux->next = temp->next;
+                // Borramos Aux
+                delete temp;
+            }
+            index++;
+            prevAux = temp;
+            temp = temp->next;
+        }
+        
+        if (temp->data == data){
+            // Ya encontramos el valor que queremos borrar
+            // Apuntamos el next de prevAux a el next de Aux
+            prevAux->next = temp->next;
+            // Borramos Aux
+            delete temp;
+        } else {
+            return;
+        }
     }
 }
 
 template<class T>
-void LinkedList<T>::deleteData(T data) {
-    deleteAt(findData(data));
+void LinkedList<T>::deleteAt(int index) {
+    // Validamos que el índice sea válido
+    if (index >= 0 && index < size) {
+        // Crear un apuntador auxiliar que apunte a head
+        Node<T>* aux = head;
+        // Revisamos si el índice a borar es el primero
+        if (index == 0) {
+            // Borramos el primer elemento
+            // Recorresmos head al valor de next de head
+            head = head->next;
+            // Borramos aux
+            delete aux;
+        } else {
+            // Creamos apuntador al elemento anterior a aux
+            Node<T>* prevAux = head;
+            // Apuntamos aux al segundo elemento
+            aux = head->next;
+            // Buscar el índide
+            // crear un indice axiliar que sea igual a 1
+            int auxIndex = 1;
+            // Recorrer la lista hasta encontrar la posición dada
+            while (auxIndex < index) {
+                // incrementamos el indice auxliar
+                auxIndex++;
+                // Recorremos auxPrev
+                prevAux = aux;
+                // Recorremos aux
+                aux = aux->next;
+            }
+            // Ya encontramos el valor que queremos borrar
+            // Apuntamos el next de prevAux a el next de Aux
+            prevAux->next = aux->next;
+            // Borramos Aux
+            delete aux;
+        }
+    } else {
+        // Generar una excepción
+        throw out_of_range("El índice es inválido");
+    }
 }
 
 
