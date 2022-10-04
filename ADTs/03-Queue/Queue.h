@@ -6,7 +6,7 @@
 template<class T>
 class Queue {
 private:
-    Node<T>* head;
+    Node<T>* front;
     int size;
 
 public:
@@ -20,17 +20,17 @@ public:
 
 template<class T>
 Queue<T>::Queue(){
-    head = nullptr;
+    front = nullptr;
     size = 0;
 }
 
 template<class T>
 void Queue<T>::push(T data){
-    if(head == nullptr){
-        head = new Node<T>(data);
+    if(front == nullptr){
+        front = new Node<T>(data);
         this->size++;
     } else {
-        Node<T>* temp = head;
+        Node<T>* temp = front;
         while(temp->next!=nullptr){
             temp = temp->next;
         }
@@ -45,17 +45,17 @@ void Queue<T>::push(T data){
 
 template<class T>
 T Queue<T>::peak() {
-    return head->data;
+    return front->data;
 }
 
 template<class T>
 T Queue<T>::pop() {
-    if(head == nullptr){
+    if(front == nullptr){
         return;
     } else {
-        Node<T>* temp = head;
+        Node<T>* temp = front;
         T toReturn = temp->data;
-        head = head->next;
+        front = front->next;
         delete temp;
         return toReturn;
     }
@@ -63,7 +63,7 @@ T Queue<T>::pop() {
 
 template<class T>
 void Queue<T>::print(){
-    Node<T>* aux = head;
+    Node<T>* aux = front;
     int x = 1;
     while (aux-> next != nullptr)
     {
