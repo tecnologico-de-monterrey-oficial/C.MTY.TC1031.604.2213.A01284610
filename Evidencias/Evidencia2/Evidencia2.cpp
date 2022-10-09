@@ -59,27 +59,16 @@ void quickSort(DoublyLinkedList<T> &list, int start, int end) {
 template <class T>
 int sequentialDiffSearch(DoublyLinkedList<T> list, int index) {
     int i = index;
+    
+    if (index == 0){
+        return index;
+    }
+
     while (i > 0 && strcmp(list[i-1].ubi.substr(0,3).c_str(), list[i].ubi.substr(0,3).c_str())==0){
         i--;
     }
     return i;
 }
-
-// template <class T>
-// void sequentialPrintRun(DoublyLinkedList<T> list, int index) {
-//     int i = index;
-//     bool loop = true;
-
-//     while (loop){
-//         printLog(list,i);
-//         if (!(i < list.size()-1) || !(strcmp(list[i].ubi.substr(0,3).c_str(), list[i+1].ubi.substr(0,3).c_str())==0)){
-//             loop = false;
-//         }
-//         i++;
-//     }
-//     return;
-// }
-
 
 template <class T>
 int_fast32_t binarySearch(DoublyLinkedList<T> list, string value) {
@@ -119,10 +108,20 @@ int_fast32_t binarySearch(DoublyLinkedList<T> list, string value) {
 template <class T>
 bool searchManager(DoublyLinkedList<T> logsM, DoublyLinkedList<T> logsR, string ubi){
 
+    bool loopM = true;
+    bool loopR = true;
+
+    bool sameM = true;
+    bool sameR = true;
+
+    int countM = 0;
+    int countR = 0;
+
     int indexM = binarySearch(logsM,ubi);
     int indexR = binarySearch(logsR,ubi);
     int month = 0;
     int year = 0;
+
 
     if (indexM == -1 && indexR == -1){
         return false;
@@ -133,39 +132,44 @@ bool searchManager(DoublyLinkedList<T> logsM, DoublyLinkedList<T> logsR, string 
         //R has values
         month = logsR[indexR].month;
         year = logsR[indexR].year;
+        loopM = false;
+        // cout << "el menor es R y:" << year << " m:" << month << "entre R" << endl;
     } else if (indexR == -1){
         //M has values
         month = logsM[indexM].month;
         year = logsM[indexM].year;
+        loopR = false;
+        // cout << "el menor es M y:" << year << " m:" << month << "entre M" << endl;
+
     } else {
         //both have values
         if (logsR[indexR].newdate < logsM[indexM].newdate){
             month = logsR[indexR].month;
             year = logsR[indexR].year;
+            // cout << "el menor es R y:" << year << " m:" << month << "entre M&R" << endl;
         }else{
             month = logsM[indexM].month;
             year = logsM[indexM].year;
+            // cout << "el menor es M y:" << year << " m:" << month << "entre M&R" << endl;
         }
     }
     //buscar por cada mes secuencial y sumar counter la cantidad de entries cada
-    bool loopM = true;
-    bool loopR = true;
 
-    bool sameM = true;
-    bool sameR = true;
-
-    int countM = 0;
-    int countR = 0;
 
     string months[12] = {"jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dic"};
 
     while (loopR || loopM){
-        if (!(indexM < logsM.getSize()-1) || !(strcmp(logsM[indexM].ubi.substr(0,3).c_str(), logsM[indexM+1].ubi.substr(0,3).c_str())==0)){
-            loopM = false;
-        } 
-        if (!(indexR < logsR.getSize()-1) || !(strcmp(logsR[indexR].ubi.substr(0,3).c_str(), logsR[indexR+1].ubi.substr(0,3).c_str())==0)){
-            loopR = false;
-        } 
+        if (loopM){
+            if (!(indexM < logsM.getSize()-1) || !(strcmp(logsM[indexM].ubi.substr(0,3).c_str(), ubi.c_str())==0)){
+                loopM = false;
+            } 
+        }
+
+        if (loopR){
+            if (!(indexR < logsR.getSize()-1) || !(strcmp(logsR[indexR].ubi.substr(0,3).c_str(), ubi.c_str())==0)){
+                loopR = false;
+            } 
+        }
 
         // cout << "looking into year: " << year << " month: " << month << endl;
 
@@ -191,7 +195,7 @@ bool searchManager(DoublyLinkedList<T> logsM, DoublyLinkedList<T> logsR, string 
             }
         }
 
-        if (loopM && loopR){
+        if (loopM || loopR){
             cout << months[month-1] << " " << year << " M:"  << countM << " R:"  << countR << endl;
         }
         countM = 0;
@@ -203,8 +207,6 @@ bool searchManager(DoublyLinkedList<T> logsM, DoublyLinkedList<T> logsR, string 
         }
         month = (month)%12+1;
     }
-
-
     return true;
 }
 
