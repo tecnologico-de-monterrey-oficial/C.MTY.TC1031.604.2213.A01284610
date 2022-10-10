@@ -1,5 +1,7 @@
 #pragma once
 
+using namespace std;
+
 struct Log {
     string date;
     string newdate;
