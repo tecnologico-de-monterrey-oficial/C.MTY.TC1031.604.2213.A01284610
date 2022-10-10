@@ -57,51 +57,12 @@ void quickSort(DoublyLinkedList<T> &list, int start, int end) {
 }
 
 template <class T>
-int sequentialDiffSearch(DoublyLinkedList<T> list, int index) {
-    int i = index;
-    
-    if (index == 0){
-        return index;
-    }
-
-    while (i > 0 && strcmp(list[i-1].ubi.substr(0,3).c_str(), list[i].ubi.substr(0,3).c_str())==0){
-        i--;
-    }
-    return i;
-}
-
-template <class T>
-int_fast32_t binarySearch(DoublyLinkedList<T> list, string value) {
-    // Definir el límite inferior
-    int left = 0;
-    // Definir el límite superior
-    int right = list.getSize() - 1;
-    // Iterar en la lista mientras el límite inferior <= limite superior
-    while (left <= right) {
-        // Calculo la posición del índice de en medio (limite inferior + limite superior) / 2
-        int mid = (left + right) / 2;
-        // Reviso si el valor búscado es igual el elemento de la posición del índice de en medio
-        if (list[mid]==value) {
-
-            //Busqueda secuencial hacia arriba
-            return sequentialDiffSearch(list, mid);;
-
-        } else {
-            // Si no es igual
-            // Reviso si valor buscado es menor al elemento de la posición del índice de en medio
-            if (list[mid]>value) {
-                // Si es menor
-                // actualizo el límite superior con el valor del índice de en medio - 1
-                right = mid -1;
-            } else {
-                // Si es mayor
-                // actualizo el límite inferior con el valor del índice de en medio + 1
-                left = mid + 1;
-            }
+int_fast32_t sequentialSearch(DoublyLinkedList<T> list, string value) {
+    for(int i = 0; i < list.getSize(); i++){
+        if (list[i]==value){
+            return i;
         }
     }
-    // Cuando me salga del ciclo
-    // Regreso falso
     return -1;
 }
 
@@ -117,8 +78,9 @@ bool searchManager(DoublyLinkedList<T> logsM, DoublyLinkedList<T> logsR, string 
     int countM = 0;
     int countR = 0;
 
-    int indexM = binarySearch(logsM,ubi);
-    int indexR = binarySearch(logsR,ubi);
+    int indexM = sequentialSearch(logsM,ubi);
+    int indexR = sequentialSearch(logsR,ubi);
+
     int month = 0;
     int year = 0;
 
