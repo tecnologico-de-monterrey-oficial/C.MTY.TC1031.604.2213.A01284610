@@ -1,10 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include "Log.h"
+#include "DoublyLinkedList.h"
 
 using namespace std;
 
-#include "Log.h"
-#include "DoublyLinkedList.h"
 
 template <class T>
 void swap(DoublyLinkedList<T> &list, int a, int b) {
@@ -14,6 +14,7 @@ void swap(DoublyLinkedList<T> &list, int a, int b) {
         list[b] = aux;
     }
 }
+
 
 template<class T>
 int getPivot(DoublyLinkedList<T> &list, int start, int end) {
