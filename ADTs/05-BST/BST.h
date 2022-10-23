@@ -130,6 +130,41 @@ bool BST<T>::find(T data) {
 }
 
 template<class T>
+int BST<T>::whatLevelIAm(T data) {
+    // Creamos un nodo auxiliar igual a root
+    NodeT<T>* aux = root;
+    int lvl = 0;
+    // Recorremos el arbol mientras aux sea diferente de nulos
+    while (aux != nullptr) {
+        // Validamos si el valor buscado es igual al valor de aux
+        if (aux->data == data) {
+            // Si son iguales
+            // YA LO ENCONTRAMOS y regresamos true
+            return lvl;
+        // else 
+        } else {
+            // No son iguales
+            // Validamos si el valor buscado es menor que el valor de aux
+            if (data < aux->data) {
+                // Si es menor
+                // Recorremos aux al apuntador del lado izquierdo de aux
+                aux = aux->left;
+                lvl++;
+            // else
+            } else {
+                // No es menor
+                // Recorremos aux al apuntador del lado derecho de aux
+                aux = aux->right;
+                lvl++;
+            }   
+        }
+    }
+    // cuando nos salimos del ciclo, quiere decir que no lo encontramos
+    // NO LO ENCONTRAMOS y regresamos falso
+    return -1;
+}
+
+template<class T>
 void BST<T>::remove(T data) {
     // Validar si el arbol no esta vacío
     if (!isEmpty()) {
