@@ -133,7 +133,7 @@ template<class T>
 int BST<T>::whatLevelIAm(T data) {
     // Creamos un nodo auxiliar igual a root
     NodeT<T>* aux = root;
-    int lvl = 0;
+    int lvl = 1;
     // Recorremos el arbol mientras aux sea diferente de nulos
     while (aux != nullptr) {
         // Validamos si el valor buscado es igual al valor de aux
