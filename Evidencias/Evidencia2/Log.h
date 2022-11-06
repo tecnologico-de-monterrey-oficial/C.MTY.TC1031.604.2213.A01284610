@@ -51,7 +51,7 @@ bool Log::operator<(Log log){
 }
 
 bool Log::operator>(Log log){
-    return this->key < log.key;
+    return this->key > log.key;
 }
 
 bool Log::operator<(string value){
