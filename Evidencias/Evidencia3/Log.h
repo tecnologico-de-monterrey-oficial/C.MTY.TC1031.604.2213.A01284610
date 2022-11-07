@@ -48,13 +48,13 @@ bool Log::operator>(Log log){
     return this->key > log.key;
 }
 
-bool Log::operator<=(Log log){
-    return this->key <= log.key;
-}
+// bool Log::operator<=(Log log){
+//     return this->key <= log.key;
+// }
 
-bool Log::operator>=(Log log){
-    return this->key >= log.key;
-}
+// bool Log::operator>=(Log log){
+//     return this->key >= log.key;
+// }
 
 // bool Log::operator<(string value){
 //     return strcmp(this->ubi.substr(0,3).c_str(), value.c_str())<0;
