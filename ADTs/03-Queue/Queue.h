@@ -50,15 +50,15 @@ T Queue<T>::peak() {
 
 template<class T>
 T Queue<T>::pop() {
-    if(front == nullptr){
-        return;
-    } else {
+    // if(front == nullptr){
+    //     return;
+    // } else {
         Node<T>* temp = front;
         T toReturn = temp->data;
         front = front->next;
         delete temp;
         return toReturn;
-    }
+    // }
 }
 
 template<class T>

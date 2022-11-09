@@ -6,7 +6,7 @@
 template<class T>
 class Stack {
 private:
-    Node<T>* top;
+    Node<T>* front;
     int size;
 
 public:
@@ -41,15 +41,15 @@ T Stack<T>::peak() {
 
 template<class T>
 T Stack<T>::pop() {
-    if(front == nullptr){
-        return;
-    } else {
+    // if(front == nullptr){
+    //     return front;
+    // } else {
         Node<T>* temp = front;
         T toReturn = temp->data;
         front = front->next;
         delete temp;
         return toReturn;
-    }
+    // }
 }
 
 template<class T>
