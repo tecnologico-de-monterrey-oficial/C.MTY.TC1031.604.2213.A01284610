@@ -3,6 +3,8 @@
 using namespace std;
 
 #include "HashMat.h"
+#include "HashMatV.h"
+
 
 int main() {
 
