@@ -1,14 +1,14 @@
-#ifndef HashMat_h
-#define HashMat_h
+#ifndef HashMatV_h
+#define HashMatV_h
 
 #include<vector>
 
-class HashMat {
+class HashMatV {
 private:
     vector<string> hashTable[99];
     bool status[99];
 public:
-    HashMat();
+    HashMatV();
     int hashFunction(string matricula);
     bool findMatricula(string matricula);
     void addMatricula(string matricula);
@@ -16,11 +16,11 @@ public:
     void print();
 };
 
-HashMat::HashMat() {
+HashMatV::HashMatV() {
 
 }
 
-int HashMat::hashFunction(string matricula) {
+int HashMatV::hashFunction(string matricula) {
     try {
         int numMatricula = stoi((matricula.substr(1,8)));
         return numMatricula % 99;
@@ -29,36 +29,46 @@ int HashMat::hashFunction(string matricula) {
     }   
 }
 
-bool HashMat::findMatricula(string matricula) {
+bool HashMatV::findMatricula(string matricula) {
     // Obtenmos la dirección base con la función hash
     int index = hashFunction(matricula);
-    if (index >= 0 && HashMat[index].find(matricula)!=HashMat[index].end) {
-        return true;
-    } else {
+    if(index>=0){
+        vector<string>:: iterator it;
+        it = find(hashTable[index].begin(), hashTable[index].end(), matricula);
+        if (it!= hashTable[index].end())
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }else{
         return false;
     }
 }
 
-void HashMat::addMatricula(string matricula) {
+void HashMatV::addMatricula(string matricula) {
     // Obtenmos la dirección base con la función hash
     int index = hashFunction(matricula);
     if (index >= 0) {
-        if (HashMat[index].find(matricula)!= HashMat[index].end){
+        vector<string>:: iterator it;
+        it = find(hashTable[index].begin(), hashTable[index].end(), matricula);
+        if (it!= hashTable[index].end()){
             return;
         }
-        HashMat[index].push_back(matricula);
+        hashTable[index].push_back(matricula);
         return;
     } else {
         throw invalid_argument("La matrícula no es una matrícula");
     }
 }
 
-void HashMat::deleteMatricula(string matricula) {
+void HashMatV::deleteMatricula(string matricula) {
     // Obtenmos la dirección base con la función hash
     int index = hashFunction(matricula);
     if (index >= 0) {
-        if(HashMat[index].find(matricula) != HashMat[index].end){
-            HashMat.delete(HashMat[index].find(matricula));
+        vector<string>:: iterator it;
+        if(it != hashTable[index].end()){
+            hashTable[index].erase(it);
             return;
         }
         return;
@@ -68,9 +78,12 @@ void HashMat::deleteMatricula(string matricula) {
     }
 }
 
-void HashMat::print() {
+void HashMatV::print() {
     for (int i=0; i<99; i++) {
-        cout << i << " " << hashTable[i] << endl;
+        for (auto j : hashTable[i]){
+        cout << i << " " << j << endl;
+        }
+        cout << "\n";
     }
 }
 
