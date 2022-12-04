@@ -80,10 +80,11 @@ void HashMatV::deleteMatricula(string matricula) {
 
 void HashMatV::print() {
     for (int i=0; i<99; i++) {
-        for (auto j : hashTable[i]){
-        cout << i << " " << j << endl;
+        cout << i << " ";
+        for (auto mat : hashTable[i]){
+        cout << mat << " ";
         }
-        cout << "\n";
+        cout << endl;
     }
 }
 
