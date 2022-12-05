@@ -27,8 +27,8 @@ public:
     // void DFS(T Vertex); // Depth First Search
     // void DFSR(int index, vector<bool> &status); 
     // void print();
+    void printVertices();
     void Dijkstra(T vertex, T dest);
-
     void DijkstraReverse(T vertex, T dest);
 
 };
@@ -72,7 +72,17 @@ Graph<T>::Graph(vector<T> vertices_, vector< Vertex<T> > edges) {
 
 template<class T>
 int Graph <T>::findVertex(T vertex) {
-    return vertices.hashFunction(vertex);
+    return vertices.findPort(vertex);
+}
+
+
+template<class T>
+void Graph <T>::printVertices() {
+    for (int i=0; i<size; i++) {
+        if (vertices[i] != ""){
+            cout << vertices[i] << endl;
+        }
+    }
 }
 
 // template<class T>
@@ -185,6 +195,22 @@ template<class T>
 void Graph<T>::Dijkstra(T vertex, T dest) {
     // Obtener el índice del vértice que recibimos de parámetro
     int index = findVertex(vertex);
+
+    if (vertex == dest){
+        cout << " WARNING: Ya esta en ese puerto\n" << endl;
+        return;
+    }
+
+   if (findVertex(vertex) == -1){
+        cout << " WARNING: lo siento, no se encuentra el origen en la base de datos\n" << endl;
+        return;
+   }
+
+   if (findVertex(dest) == -1){
+        cout << " WARNING: lo siento, no se encuentra el destino en la base de datos\n" << endl;
+        return;
+   }
+
     // Validar que si exista el vértice en la tabla de vértices
     if(index >=0){
         // Si existe
@@ -256,6 +282,20 @@ void Graph<T>::Dijkstra(T vertex, T dest) {
             }
         }
 
+
+        for (int i=0; i<size; i++) {
+            // imprimimos todos los elementos de la pila
+            if (vertices[i] == dest && cost[i] == INT_MAX){
+                    cout << " WARNING: lo siento, no hay manera para llegar al puerto que desea\n" << endl;
+                    return;
+            }               
+        }
+
+        vector<stack<int>> pathStackOg(size);
+        pathStackOg = pathStack;
+
+        //TITLE CARD 1
+        cout << "\n\n||La ruta mas corta de " << vertex << " -> " << dest << "||" << endl;
         int sumWeight = 0;
         while (!pathStack[vertices.hashFunction(dest)].empty()) {
             cout << vertices[pathStack[vertices.hashFunction(dest)].top()] << " -> ";
@@ -264,7 +304,27 @@ void Graph<T>::Dijkstra(T vertex, T dest) {
         }
         cout << "con un costo de:" << sumWeight << " mi"<< endl;
 
-            
+        //TITLE CARD 2
+        cout << "\n\n||El puerto mas lejos y optimo saliendo de " << vertex << "||"<< endl;
+        pathStack = pathStackOg;
+        int furthest = 0;
+        int indexer = 0;
+        for(int i = 0; i<size; i++){
+            if(vertices[i] != "" && cost[i] != INT_MAX){
+                if(cost[i] > furthest){
+                    furthest = cost[i];
+                    indexer = i;
+                }
+            }
+        }
+        while (!pathStack[indexer].empty()) {
+            cout << vertices[pathStack[indexer].top()] << " -> ";
+            sumWeight = cost[pathStack[indexer].top()];
+            pathStack[indexer].pop();
+        }
+        cout << "con un costo de:" << sumWeight << " mi"<< endl;
+
+        DijkstraReverse(vertex, dest);
     } else{
     // else
         // No existe
@@ -352,20 +412,25 @@ void Graph<T>::DijkstraReverse(T vertex, T dest) {
 
         for (int i=0; i<size; i++) {
             // imprimimos todos los elementos de la pila
-            if (vertices[i] != "" && cost[i] == INT_MAX){
-                    unavailablePorts.push_back(vertices[i]);
+            if (vertices[i] != ""){
+                if (cost[i] == INT_MAX){
+                unavailablePorts.push_back(vertices[i]);
+                }
             }
         }
 
-        
+        //TITLE CARD 3
+        cout << "\n\n||La ruta mas larga de " << vertex << " -> " << dest << "||" << endl;
         int sumWeight = 0;
-        while (!pathStack[vertices.hashFunction(dest)].empty()) {
-            cout << vertices[pathStack[vertices.hashFunction(dest)].top()] << " -> ";
-            sumWeight = cost[pathStack[vertices.hashFunction(dest)].top()];
-            pathStack[vertices.hashFunction(dest)].pop();
+        while (!pathStack[vertices.findPort(dest)].empty()) {
+            cout << vertices[pathStack[vertices.findPort(dest)].top()] << " -> ";
+            sumWeight = cost[pathStack[vertices.findPort(dest)].top()];
+            pathStack[vertices.findPort(dest)].pop();
         }
         cout << "con un costo de:" << -1*sumWeight << " mi"<< endl;
 
+        //TITLE CARD 4
+        cout << "\n\n||Puertos inalcanzables||" << endl;
         if (unavailablePorts.size() == 0){
             cout << "Se pueden llegar a todos los puertos desde: " << vertex << "!" << endl;
         } else {
@@ -373,8 +438,8 @@ void Graph<T>::DijkstraReverse(T vertex, T dest) {
             for (auto port : unavailablePorts){
                 cout << port << ", ";
             }
-            cout << endl;
         }
+        cout << endl;
         
 
         // // Imprimir todos los paths

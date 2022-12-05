@@ -5,15 +5,21 @@
 
 using namespace std;
 
+void menu1(){
+        cout << "\n==[MENU]==" << endl;
+        cout << "1. Despielgue Puertos" << endl;
+        cout << "2. Ingresar Puertos" << endl;
+        cout << "0. Salir" << endl;
+
+}
+
 int main(){
     ifstream file;
     string fileName;
     int option = 0;
-    int option2 = 0;
+    string strOption, strOption2;
     bool loop = true;
     bool loop2 = true;
-    bool loop3 = true;
-
 
     while (loop){
         cout << "\nIngrese el nombre del archivo con los datos incluyendo la terminación de la extención: " << endl;
@@ -31,7 +37,7 @@ int main(){
         if(fileCheck.good()){
             loop = false;
         } else {
-            cout << "No se encontró el archivo, ingrese el nombre otra vez." << endl;
+            cout << " WARNING: No se encontró el archivo, ingrese el nombre otra vez." << endl;
         }
 
         fileCheck.close();
@@ -60,17 +66,58 @@ int main(){
 
     Graph<string> portGraph(tempPort, tempVertices);
 
-    portGraph.Dijkstra("Ambarli", "Bandar");
-    portGraph.DijkstraReverse("Ambarli", "Bandar");
+    
+    while (true){
+        menu1();
+        cin >> option;
+        cin.clear();
+        cout << "\n";
+        
+        switch (option)
+        {
+        case 1:
+            portGraph.printVertices();
+            break;
+        
+        case 2:
+            loop = true;
+            while(loop){
+                cout << "Ingrese el puerto de SALIDA o 'return' para salir" << endl;
+                cin >> strOption;
+                cin.clear();
+                if (strOption == "return"){
+                    loop = false;
+                } else {
+                    cout << "Ingrese el puerto de ENTRADA o 'return' para salir" << endl;
+                    loop2 = true;
+                    while (loop2){
+                        cin >> strOption2;
+                        cin.clear();
+                        if (strOption2 == "return"){
+                            loop2 = false;
+                        } else {
+                            portGraph.Dijkstra(strOption,strOption2);
+                            loop2 = false;
+                        }
+                    }
+                }
+            }
+            break;
+
+        case 0:
+            cout << "Muchas Gracias" <<  endl;
+            return 0;
+            break;
+        
+        default:
+        cout << " WARNING: Hubo un error con la seleccion de opcion" << endl;
+            break;
+        }
+    }
 
 
-    cout << "lol\n";
-    portGraph.Dijkstra("Ambarli", "Cartagena");
-    cout << "lol2\n";
-    portGraph.Dijkstra("Ambarli", "iauhsdhiudashiuasd");
-    cout << "lol3\n";
-    portGraph.Dijkstra("Ambarli", "Ambarli");
-
+    // cout << "\n\nNormal" << endl; 
+    // portGraph.Dijkstra("Ambarli", "Bandar");
 
     return 0;
 }

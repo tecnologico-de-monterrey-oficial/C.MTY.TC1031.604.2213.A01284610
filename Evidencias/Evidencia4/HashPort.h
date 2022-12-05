@@ -10,7 +10,7 @@ private:
 public:
     HashPort();
     int hashFunction(string Port);
-    bool findPort(string Port);
+    int findPort(string Port);
     string& operator[](int index);
     void addPort(string Port);
     void deletePort(string Port);
@@ -43,7 +43,7 @@ int HashPort::hashFunction(string Port) {
     }   
 }
 
-bool HashPort::findPort(string Port) {
+int HashPort::findPort(string Port) {
     // Obtenmos la dirección base con la función hash
     int index = hashFunction(Port);
     int baseIndex = index;
@@ -52,19 +52,19 @@ bool HashPort::findPort(string Port) {
             // Validar si el elemento se encuentra en el índice base
             if (hashTable[index] == Port) {
                 // ya lo encontré
-                return true;
+                return index;
             } else {
                 index = (index + 1) % 37;
                 // Validamos si ya le dimos la vuelta
                 if (index == baseIndex) {
-                    return false;
+                    return -1;
                 }
             }
         }
         // no lo encontramos
-        return false;
+        return -1;
     } else {
-        return false;
+        return -1;
     }
 }
 
